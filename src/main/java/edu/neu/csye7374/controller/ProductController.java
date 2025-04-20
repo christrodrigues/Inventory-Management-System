@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.inventory.model.Product;
-import com.inventory.repository.BuyerRepository;
-import com.inventory.repository.ProductRepository;
-import com.inventory.designpattern.strategy.ProductStrategy;
-import com.inventory.designpattern.strategy.InventoryStrategy;
+import edu.neu.csye7374.model.Product;
+import edu.neu.csye7374.repository.BuyerRepository;
+import edu.neu.csye7374.repository.ProductRepository;
+import edu.neu.csye7374.designpattern.strategy.ProductStrategy;
+import edu.neu.csye7374.designpattern.strategy.InventoryStrategy;
 
 @RestController
 @RequestMapping("/product")

@@ -2,7 +2,7 @@ package edu.neu.csye7374.designpattern.strategy;
 
 import java.util.List;
 
-import com.inventory.InventoryCartAPI;
+import edu.neu.csye7374.InventoryCartAPI;
 import edu.neu.csye7374.designpattern.decorator.CustomDecorator;
 import edu.neu.csye7374.designpattern.decorator.Product;
 import edu.neu.csye7374.model.ProductPO;
@@ -58,7 +58,7 @@ public class OrderStrategy implements StrategyAPI{
 			State s = new State();
 			productPORepo.save(proPO);
 			//Product product = productRepo.getProductbyID(proPO.getProduct().getId());
-			com.inventory.model.Product product = proPO.getProduct();
+			edu.neu.csye7374.model.Product product = proPO.getProduct();
 			
 			cart = new CustomDecorator(cart, product, proPO);
 			int difference = product.getQuantity() - proPO.getQuantity();

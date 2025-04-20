@@ -1,7 +1,7 @@
 package edu.neu.csye7374.designpattern.facade;
 
-import com.inventory.model.Invoice;
-import com.inventory.repository.InvoiceRepository;
+import edu.neu.csye7374.model.Invoice;
+import edu.neu.csye7374.repository.InvoiceRepository;
 
 public class PDFGen extends Facade{
 

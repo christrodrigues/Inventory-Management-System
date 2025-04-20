@@ -1,4 +1,4 @@
-package com.inventory.controller;
+package edu.neu.csye7374.controller;
 
 import java.util.List;
 
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.inventory.model.PurchaseOrder;
-import com.inventory.repository.ProductPORepository;
-import com.inventory.repository.ProductRepository;
-import com.inventory.repository.OrderRepository;
-import com.inventory.designpattern.strategy.OrderStrategy;
-import com.inventory.designpattern.strategy.InventoryStrategy;
+import edu.neu.csye7374.model.PurchaseOrder;
+import edu.neu.csye7374.repository.ProductPORepository;
+import edu.neu.csye7374.repository.ProductRepository;
+import edu.neu.csye7374.repository.OrderRepository;
+import edu.neu.csye7374.designpattern.strategy.OrderStrategy;
+import edu.neu.csye7374.designpattern.strategy.InventoryStrategy;
 
 @RestController
 @RequestMapping("/purchaseOrder")

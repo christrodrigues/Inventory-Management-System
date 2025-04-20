@@ -1,12 +1,12 @@
-    package com.inventory.controller;
+package edu.neu.csye7374.controller;
 
-import com.inventory.model.Invoice;
-import com.inventory.repository.InvoiceRepository;
-import com.inventory.repository.OrderRepository;
-import com.inventory.designpattern.strategy.InventoryStrategy;
-import com.inventory.designpattern.strategy.InvoiceStrategy;
-import com.inventory.designpattern.facade.PDFGen;
-import com.inventory.designpattern.facade.SendMessage;
+import edu.neu.csye7374.model.Invoice;
+import edu.neu.csye7374.repository.InvoiceRepository;
+import edu.neu.csye7374.repository.OrderRepository;
+import edu.neu.csye7374.designpattern.strategy.InventoryStrategy;
+import edu.neu.csye7374.designpattern.strategy.InvoiceStrategy;
+import edu.neu.csye7374.designpattern.facade.PDFGen;
+import edu.neu.csye7374.designpattern.facade.SendMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

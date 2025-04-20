@@ -1,5 +1,8 @@
 package edu.neu.csye7374.designpattern.state;
 
+import edu.neu.csye7374.model.Product;
+import edu.neu.csye7374.repository.ProductRepository;
+
 public class StockUpdate extends StateAPI{
 
     Product product;
