@@ -1,7 +1,7 @@
-package com.inventory.designpattern.facade;
+package edu.neu.csye7374.designpattern.facade;
 
-import com.inventory.designpattern.factory.CommunicationInstanceFactory;
-import com.inventory.repository.InvoiceRepository;
+import edu.neu.csye7374.designpattern.factory.CommunicationInstanceFactory;
+import edu.neu.csye7374.repository.InvoiceRepository;
 
 public class SendMessage extends Facade{
 

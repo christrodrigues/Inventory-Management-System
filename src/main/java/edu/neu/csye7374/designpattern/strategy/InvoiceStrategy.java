@@ -3,11 +3,11 @@ package edu.neu.csye7374.designpattern.strategy;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.inventory.designpattern.facade.PDFGen;
-import com.inventory.model.Invoice;
-import com.inventory.model.PurchaseOrder;
-import com.inventory.repository.InvoiceRepository;
-import com.inventory.repository.OrderRepository;
+import edu.neu.csye7374.designpattern.facade.PDFGen;
+import edu.neu.csye7374.model.Invoice;
+import edu.neu.csye7374.model.PurchaseOrder;
+import edu.neu.csye7374.repository.InvoiceRepository;
+import edu.neu.csye7374.repository.OrderRepository;
 
 public class InvoiceStrategy implements StrategyAPI{
 

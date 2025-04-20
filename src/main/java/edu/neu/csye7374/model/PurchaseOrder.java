@@ -1,4 +1,4 @@
-package com.inventory.model;
+package edu.neu.csye7374.model;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class PurchaseOrder {
 
 	@OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JsonManagedReference
-	private List<ProductPO> products;
+	private List<edu.neu.csye7374.model.ProductPO> products;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "buyer_id", nullable = false)

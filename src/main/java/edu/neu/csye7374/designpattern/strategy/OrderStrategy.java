@@ -3,16 +3,16 @@ package edu.neu.csye7374.designpattern.strategy;
 import java.util.List;
 
 import com.inventory.InventoryCartAPI;
-import com.inventory.designpattern.decorator.CustomDecorator;
-import com.inventory.designpattern.decorator.Product;
-import com.inventory.model.ProductPO;
-import com.inventory.model.PurchaseOrder;
-import com.inventory.repository.ProductPORepository;
-import com.inventory.repository.ProductRepository;
-import com.inventory.repository.OrderRepository;
-import com.inventory.designpattern.state.StockAlert;
-import com.inventory.designpattern.state.State;
-import com.inventory.designpattern.state.StockUpdate;
+import edu.neu.csye7374.designpattern.decorator.CustomDecorator;
+import edu.neu.csye7374.designpattern.decorator.Product;
+import edu.neu.csye7374.model.ProductPO;
+import edu.neu.csye7374.model.PurchaseOrder;
+import edu.neu.csye7374.repository.ProductPORepository;
+import edu.neu.csye7374.repository.ProductRepository;
+import edu.neu.csye7374.repository.OrderRepository;
+import edu.neu.csye7374.designpattern.state.StockAlert;
+import edu.neu.csye7374.designpattern.state.State;
+import edu.neu.csye7374.designpattern.state.StockUpdate;
 
 
 public class OrderStrategy implements StrategyAPI{

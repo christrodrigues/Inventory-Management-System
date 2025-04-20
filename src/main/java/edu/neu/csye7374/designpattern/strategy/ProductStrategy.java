@@ -1,11 +1,11 @@
 package edu.neu.csye7374.designpattern.strategy;
 
-import com.inventory.model.Product;
-import com.inventory.designpattern.observer.Notify;
-import com.inventory.designpattern.observer.UpdateBuyers;
-import com.inventory.designpattern.observer.UpdateDB;
-import com.inventory.repository.BuyerRepository;
-import com.inventory.repository.ProductRepository;
+import edu.neu.csye7374.model.Product;
+import edu.neu.csye7374.designpattern.observer.Notify;
+import edu.neu.csye7374.designpattern.observer.UpdateBuyers;
+import edu.neu.csye7374.designpattern.observer.UpdateDB;
+import edu.neu.csye7374.repository.BuyerRepository;
+import edu.neu.csye7374.repository.ProductRepository;
 
 public class ProductStrategy implements StrategyAPI{
 

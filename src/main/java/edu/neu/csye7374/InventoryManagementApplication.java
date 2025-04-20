@@ -1,4 +1,4 @@
-package com.inventory;
+package edu.neu.csye7374;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

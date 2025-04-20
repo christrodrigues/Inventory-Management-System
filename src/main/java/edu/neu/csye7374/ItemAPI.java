@@ -1,4 +1,4 @@
-package com.inventory;
+package edu.neu.csye7374;
 
 public class ItemAPI implements Cloneable{
 

@@ -1,4 +1,4 @@
-package com.inventory.designpattern.facade;
+package edu.neu.csye7374.designpattern.facade;
 
 import com.inventory.model.Invoice;
 import com.inventory.repository.InvoiceRepository;

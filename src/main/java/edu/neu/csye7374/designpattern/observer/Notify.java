@@ -3,7 +3,7 @@ package edu.neu.csye7374.designpattern.observer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.inventory.model.Product;
+import edu.neu.csye7374.model.Product;
 
 public class Notify {
 

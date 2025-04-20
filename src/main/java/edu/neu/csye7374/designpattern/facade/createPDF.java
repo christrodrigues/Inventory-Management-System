@@ -1,4 +1,4 @@
-package com.inventory.designpattern.facade;
+package edu.neu.csye7374.designpattern.facade;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.inventory.model.Invoice;
-import com.inventory.model.ProductPO;
+import edu.neu.csye7374.model.Invoice;
+import edu.neu.csye7374.model.ProductPO;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 

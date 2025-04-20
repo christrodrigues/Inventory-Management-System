@@ -3,8 +3,8 @@ package edu.neu.csye7374.designpattern.strategy;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.inventory.model.Buyer;
-import com.inventory.repository.BuyerRepository;
+import edu.neu.csye7374.model.Buyer;
+import edu.neu.csye7374.repository.BuyerRepository;
 
 public class BuyerStrategy implements StrategyAPI {
 

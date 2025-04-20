@@ -1,4 +1,4 @@
-package com.inventory.model;
+package edu.neu.csye7374.model;
 
 import javax.persistence.*;
 

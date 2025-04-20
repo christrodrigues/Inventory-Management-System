@@ -1,7 +1,7 @@
 package edu.neu.csye7374.designpattern.observer;
 
-import com.inventory.model.Product;
-import com.inventory.repository.BuyerRepository;
+import edu.neu.csye7374.model.Product;
+import edu.neu.csye7374.repository.BuyerRepository;
 
 public class UpdateBuyers extends ObserverAPI{
 

@@ -1,4 +1,4 @@
-package com.inventory.repository;
+package edu.neu.csye7374.repository;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.inventory.model.PurchaseOrder;
+import edu.neu.csye7374.model.PurchaseOrder;
 
 @Repository
 @Transactional

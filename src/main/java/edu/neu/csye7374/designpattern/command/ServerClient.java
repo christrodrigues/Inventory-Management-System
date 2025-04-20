@@ -1,4 +1,4 @@
-package com.inventory.designpattern.command;
+package edu.neu.csye7374.designpattern.command;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

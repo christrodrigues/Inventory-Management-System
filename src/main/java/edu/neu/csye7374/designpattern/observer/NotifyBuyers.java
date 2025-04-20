@@ -2,10 +2,10 @@ package edu.neu.csye7374.designpattern.observer;
 
 import java.util.List;
 
-import com.inventory.designpattern.facade.SendMessage;
-import com.inventory.model.Buyer;
-import com.inventory.model.Product;
-import com.inventory.repository.BuyerRepository;
+import edu.neu.csye7374.designpattern.facade.SendMessage;
+import edu.neu.csye7374.model.Buyer;
+import edu.neu.csye7374.model.Product;
+import edu.neu.csye7374.repository.BuyerRepository;
 
 public class NotifyBuyers extends Buyer {
 

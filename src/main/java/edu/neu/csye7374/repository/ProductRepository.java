@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.inventory.model.Product;
+import edu.neu.csye7374.model.Product;
 
 
 @Repository

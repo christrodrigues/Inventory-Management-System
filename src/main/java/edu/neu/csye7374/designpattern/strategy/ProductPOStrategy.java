@@ -1,7 +1,7 @@
 package edu.neu.csye7374.designpattern.strategy;
 
-import com.inventory.model.ProductPO;
-import com.inventory.repository.ProductPORepository;
+import edu.neu.csye7374.model.ProductPO;
+import edu.neu.csye7374.repository.ProductPORepository;
 
 public class ProductPOStrategy implements StrategyAPI{
 

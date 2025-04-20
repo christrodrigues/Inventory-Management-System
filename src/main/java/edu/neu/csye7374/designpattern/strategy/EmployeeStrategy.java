@@ -3,8 +3,8 @@ package edu.neu.csye7374.designpattern.strategy;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.inventory.model.Employee;
-import com.inventory.repository.EmployeeRepository;
+import edu.neu.csye7374.model.Employee;
+import edu.neu.csye7374.repository.EmployeeRepository;
 
 public class EmployeeStrategy implements StrategyAPI{
 

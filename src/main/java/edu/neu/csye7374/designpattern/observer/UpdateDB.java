@@ -3,8 +3,8 @@ package edu.neu.csye7374.designpattern.observer;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.inventory.model.Product;
-import com.inventory.repository.ProductRepository;
+import edu.neu.csye7374.model.Product;
+import edu.neu.csye7374.repository.ProductRepository;
 
 public class UpdateDB extends ObserverAPI{
 
