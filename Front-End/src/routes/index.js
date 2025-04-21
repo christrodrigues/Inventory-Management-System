@@ -27,3 +27,4 @@ export const URLS = {
     GET_ALL_INVOICE: '/api/invoice/getAll',
     GENERATE_INVOICE : '/api/invoice/generateInvoice/'
 }
+
