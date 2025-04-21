@@ -1,3 +1,5 @@
+//Dashboard Page
+
 import React from 'react'
 
 function Dashboard() {
