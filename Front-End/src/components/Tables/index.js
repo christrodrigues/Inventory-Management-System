@@ -1,3 +1,5 @@
+//Table file
+
 import React from 'react'
 import {Table} from 'react-bootstrap';
 import '../../styles/index.scss';
