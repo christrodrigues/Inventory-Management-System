@@ -50,7 +50,7 @@ public class DBConfig {
         LocalSessionFactoryBean factory = new LocalSessionFactoryBean();
         factory.setDataSource(getDataSource());
         factory.setHibernateProperties(hibernateProperties());
-        factory.setPackagesToScan(new String[] { "com.inventory.model" });
+        factory.setPackagesToScan(new String[] { "edu.neu.csye7374.model" });
         return factory;
     }
 

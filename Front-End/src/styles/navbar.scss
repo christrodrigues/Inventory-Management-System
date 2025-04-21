@@ -1,0 +1,54 @@
+/* Add these styles to your CSS file */
+
+/* For the SideNav */
+.side--nav {
+  position: fixed;
+  height: 100%;
+  width: 220px; /* Adjust as needed */
+  background-color: #333; /* Sidebar background color */
+}
+
+/* Adjust the following styles based on your design */
+.side-nav-icons {
+  color: white;
+  margin-right: 10px;
+}
+
+/* For the Navbar */
+.navbar {
+  margin-left: 220px; /* Set to the width of the SideNav */
+}
+
+/* Center the Navbar Brand */
+.navbar-brand {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Adjust the following styles based on your design */
+.navbar-text {
+  color: white;
+  margin-right: 20px;
+}
+
+/* For the Container inside Navbar */
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* For the Button inside Navbar */
+.btn-outline-dark {
+  color: white;
+  border-color: white;
+}
+
+/* Example styles for better readability */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa; /* Body background color */
+  color: #495057; /* Body text color */
+}
