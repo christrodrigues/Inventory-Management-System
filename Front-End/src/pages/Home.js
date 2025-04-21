@@ -1,3 +1,5 @@
+//Home.js file
+
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import "../styles/home.scss";
