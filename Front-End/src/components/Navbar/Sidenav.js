@@ -53,7 +53,9 @@ function Sidenav() {
 
 
       <React.Fragment>
-        <Navbar style={{ backgroundColor: 'Silver',
+        <Navbar style={{ backgroundColor: '#f0ffff',
+        borderRadius: '2px',
+        borderColor: 'red',
     borderBottom: '2px solid #ddd',
     height: '70px',
     padding: '0 30px 0 250px', // 👈 pushes everything right to avoid sidebar
@@ -63,13 +65,13 @@ function Sidenav() {
     zIndex: 1  }}>
           <Container>
             
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{  display: 'flex', alignItems: 'center' }}>
     <img
       src={googleLogo}
       alt="Google Logo"
       style={{ height: '40px', marginRight: '15px' }}
     />
-     <Navbar.Brand href="/" style={{ paddingLeft: '40%', fontWeight: 'bold', textAlign: 'center', fontSize: '45px' , color: 'black' }}>
+     <Navbar.Brand href="/" style={{  fontWeight: 'bold', textAlign: 'center', fontSize: '45px' , color: '#06609c' }}>
               Google Product Application
             </Navbar.Brand>
   </div>
