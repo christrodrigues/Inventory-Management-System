@@ -1,3 +1,5 @@
+//Manage Buyer
+
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Container, Row, Button, Col, Table, Modal } from "react-bootstrap";
