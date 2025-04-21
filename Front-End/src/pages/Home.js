@@ -17,7 +17,7 @@ function Home() {
       <Container>
         <Row className="container-main">
           <Col md={12}>
-                 <h2 style={{ fontWeight: 'bold', textAlign: 'center', fontSize: '45px' , color: 'teal'}}>Welcome to our Apple Product App</h2>
+                 <h2 style={{ fontWeight: 'bold', textAlign: 'center', fontSize: '45px' , color: 'teal'}}>Welcome to our Google Product App</h2>
           </Col>
         </Row>
       </Container>
