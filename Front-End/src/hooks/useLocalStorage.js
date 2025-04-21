@@ -18,7 +18,7 @@ export function useLocalStorageState(key, initialState = {}) {
         if (valueInLocalStorage) {
             return deserialize(valueInLocalStorage);
         }
-        // in case it is an expensive function
+       
         return typeof initialState === 'function' ? initialState() : initialState;
     });
 
