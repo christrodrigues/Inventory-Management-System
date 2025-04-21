@@ -104,7 +104,7 @@ function Login() {
     <div className="login-bg">
       <Row className="login--row">
         <Col md={{ span: 24, offset: 2 }}>
-          <h3 style={{ color: 'white',  }}>APPLE PRODUCT APP</h3>
+          <h3 style={{ color: 'white',  }}></h3>
           <br />
           <Form onSubmit={submitForm}>
             <Form.Group className="mb-3" controlId="formBasicUserName">
