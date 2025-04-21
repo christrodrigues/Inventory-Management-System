@@ -1,3 +1,6 @@
+//profile page
+
+
 import React from 'react'
 
 function Profile() {
