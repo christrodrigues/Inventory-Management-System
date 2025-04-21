@@ -30,6 +30,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import displayToast from "../../utils/displayToast";
 import { Button, Navbar, Container } from "react-bootstrap";
+import googleLogo from "../../assets/google-logo.png"; // Add logo in /assets folder
 
 function Sidenav() {
   const history = useHistory();
@@ -52,11 +53,28 @@ function Sidenav() {
 
 
       <React.Fragment>
-        <Navbar style={{ borderBottom: '2px solid #ddd' , textColor: 'white', backgroundColor: 'Silver'  }}>
+        <Navbar style={{ backgroundColor: 'Silver',
+    borderBottom: '2px solid #ddd',
+    height: '70px',
+    padding: '0 30px 0 250px', // 👈 pushes everything right to avoid sidebar
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    zIndex: 1  }}>
           <Container>
-            <Navbar.Brand href="/" style={{ paddingLeft: '40%', fontWeight: 'bold', textAlign: 'center', fontSize: '45px' , color: 'black' }}>
-              APPLE PRODUCT APP
+            
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+    <img
+      src={googleLogo}
+      alt="Google Logo"
+      style={{ height: '40px', marginRight: '15px' }}
+    />
+     <Navbar.Brand href="/" style={{ paddingLeft: '40%', fontWeight: 'bold', textAlign: 'center', fontSize: '45px' , color: 'black' }}>
+              Google Product Application
             </Navbar.Brand>
+  </div>
+
+           
 
 
 
