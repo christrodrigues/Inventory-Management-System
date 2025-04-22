@@ -1,36 +1,19 @@
 import React, { useContext } from "react";
-import SideNav, {
-  Toggle,
-  Nav,
-  NavItem,
-  NavIcon,
-  NavText,
-} from "@trendmicro/react-sidenav";
+import SideNav, { NavItem, NavText } from "@trendmicro/react-sidenav";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { useHistory, useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/Auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCoffee,
-  faHome,
-  faThermometer,
-  faUser,
-  faUserTie,
-  faFileInvoiceDollar,
-  faUserTag,
-  faReceipt,
-  faChartPie,
-  faCartPlus,
-  faCarAlt,
   faBoxOpen,
-  faPeopleCarry,
+  faUsers,
   faFileInvoice,
-  faMoneyBill,
-  faBullseye,
+  faUserTie,
+  faCartPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import displayToast from "../../utils/displayToast";
 import { Button, Navbar, Container } from "react-bootstrap";
-import googleLogo from "../../assets/google-logo.png"; // Add logo in /assets folder
+import googleLogo from "../../assets/google-logo.png";
 
 function Sidenav() {
   const history = useHistory();
@@ -39,104 +22,160 @@ function Sidenav() {
 
   const logoutUser = () => {
     displayToast("Logged out successfully!", "success");
-
     setTimeout(() => {
       setUserData(null);
       history.push("/");
     }, 1000);
   };
 
-  if (!isLoggedIn) {
-    return null;
-  } else {
-    return (
+  if (!isLoggedIn) return null;
 
+  return (
+    <>
+      {/* Top Navbar */}
+      <Navbar
+        fixed="top"
+        style={{
+          backgroundColor: "#ffffff",
+          borderBottom: "1px solid #dee2e6",
+          height: "70px",
+          padding: "0 20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          zIndex: 1030,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img
+            src={googleLogo}
+            alt="Google Logo"
+            style={{ height: "36px", marginRight: "12px" }}
+          />
+          <Navbar.Brand
+            href="/"
+            style={{
+              fontWeight: "600",
+              fontSize: "20px",
+              color: "#1a73e8",
+              margin: 0,
+            }}
+          >
+            Google Product Inventory
+          </Navbar.Brand>
+        </div>
 
-      <React.Fragment>
-        <Navbar style={{ backgroundColor: '#f0ffff',
-        borderRadius: '2px',
-        borderColor: 'red',
-    borderBottom: '2px solid #ddd',
-    height: '70px',
-    padding: '0 30px 0 250px', // 👈 pushes everything right to avoid sidebar
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    zIndex: 1  }}>
-          <Container>
-            
-          <div style={{  display: 'flex', alignItems: 'center' }}>
-    <img
-      src={googleLogo}
-      alt="Google Logo"
-      style={{ height: '40px', marginRight: '15px' }}
-    />
-     <Navbar.Brand href="/" style={{  fontWeight: 'bold', textAlign: 'center', fontSize: '45px' , color: '#06609c' }}>
-              Google Product Application
-            </Navbar.Brand>
-  </div>
-
-           
-
-
-
-            <Navbar.Collapse className="justify-content-end">
-              <Button className="light" onClick={logoutUser} style={{ backgroundColor: 'black', textColor: 'white' }}>
-                Logout
-              </Button>
-
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
-
-        <SideNav
-          className="side--nav"
-          onSelect={(selected) => {
-            const to = "/" + selected;
-            if (location.pathname !== to) {
-              history.push(to);
-            }
-
+        <Button
+          variant="outline-dark"
+          size="sm"
+          onClick={logoutUser}
+          style={{
+            fontWeight: 500,
+            borderRadius: "6px",
           }}
-           expanded={true}
         >
+          Logout
+        </Button>
+      </Navbar>
 
-          <SideNav.Nav defaultSelected="home">
-            {}
-            <NavItem eventKey="manage-products">
-
-              <NavText style={{ fontSize: '18px', color: 'beige', fontWeight: 'bold' }}>Add Products</NavText>
-            </NavItem>
-
-            {userData.designation.toUpperCase() === "MANAGER" && (
-              <NavItem eventKey="manage-employees">
-
-                <NavText>Add Employees</NavText>
-              </NavItem>
-            )}
-
-            <NavItem eventKey="manage-buyers">
-
-              <NavText style={{ fontSize: '18px', color: 'beige', fontWeight: 'bold' }}>View Buyers</NavText>
-            </NavItem>
-
-            <NavItem eventKey="manage-purchase-order">
-
-
-                {/* <i className="fa fa-fw fa-device" style={{ fontSize: '1.75em' }} /> */}
-
-              <NavText style={{ fontSize: '18px', color: 'beige', fontWeight: 'bold' }}>Purchase Orders</NavText>
-            </NavItem>
-
-            <NavItem eventKey="manage-invoice">
-
-              <NavText style={{ fontSize: '18px', color: 'beige', fontWeight: 'bold' }}>View Invoice</NavText>
-            </NavItem>
-          </SideNav.Nav>
-        </SideNav>
-      </React.Fragment>
-    );
-  }
+      {/* Sidebar */}
+      <SideNav
+        onSelect={(selected) => {
+          const to = "/" + selected;
+          if (location.pathname !== to) {
+            history.push(to);
+          }
+        }}
+        expanded={true}
+        style={{
+          backgroundColor: "#1f2937",
+          height: "100vh",
+          position: "fixed",
+          top: "0",
+          left: "0",
+          width: "220px",
+          paddingTop: "70px", // below the navbar
+          zIndex: 1020,
+        }}
+      >
+        <SideNav.Nav defaultSelected="manage-products">
+          <StyledNavItem
+            eventKey="manage-products"
+            icon={faBoxOpen}
+            label="Products"
+          />
+          {userData.designation.toUpperCase() === "MANAGER" && (
+            <StyledNavItem
+              eventKey="manage-employees"
+              icon={faUserTie}
+              label="Employees"
+            />
+          )}
+          <StyledNavItem
+            eventKey="manage-buyers"
+            icon={faUsers}
+            label="Buyers"
+          />
+          <StyledNavItem
+            eventKey="manage-purchase-order"
+            icon={faCartPlus}
+            label="Orders"
+          />
+          <StyledNavItem
+            eventKey="manage-invoice"
+            icon={faFileInvoice}
+            label="Invoices"
+          />
+        </SideNav.Nav>
+      </SideNav>
+    </>
+  );
 }
+
+// Reusable sidebar item with icon and hover effect
+const StyledNavItem = ({ eventKey, icon, label }) => {
+  const history = useHistory();
+  const location = useLocation();
+
+  const handleClick = () => {
+    const to = "/" + eventKey;
+    if (location.pathname !== to) {
+      history.push(to);
+    }
+  };
+
+  return (
+    <NavItem eventKey={eventKey}>
+      <NavText>
+        <div
+          onClick={handleClick}
+          className="nav-item-wrapper"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            padding: "12px 18px",
+            borderRadius: "6px",
+            color: "#f3f4f6",
+            fontSize: "15px",
+            fontWeight: "500",
+            cursor: "pointer",
+            transition: "background 0.2s ease",
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.backgroundColor = "#374151")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.backgroundColor = "transparent")
+          }
+        >
+          <FontAwesomeIcon icon={icon} />
+          {label}
+        </div>
+      </NavText>
+    </NavItem>
+  );
+};
+
 
 export default Sidenav;

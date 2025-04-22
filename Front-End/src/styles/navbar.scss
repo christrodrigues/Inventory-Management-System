@@ -1,54 +1,99 @@
-/* Add these styles to your CSS file */
-
-/* For the SideNav */
+/* --- Sidebar --- */
 .side--nav {
   position: fixed;
   height: 100%;
-  width: 220px; /* Adjust as needed */
-  background-color: #333; /* Sidebar background color */
+  width: 220px;
+  background-color: #1f2937; // modern dark navy
+  color: #ffffff;
+  padding: 20px 10px;
+  z-index: 999;
+  overflow-y: auto;
+
+  .side-nav-icons {
+    color: #e2e8f0;
+    margin-right: 12px;
+    font-size: 1.2rem;
+  }
+
+  button {
+    background: transparent;
+    border: none;
+    color: #cbd5e1;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: background 0.2s;
+
+    &:hover {
+      background-color: #334155;
+      color: white;
+    }
+
+    &.active {
+      background-color: #e2e8f0;
+      color: #1e293b;
+      font-weight: 600;
+    }
+  }
 }
 
-/* Adjust the following styles based on your design */
-.side-nav-icons {
-  color: white;
-  margin-right: 10px;
-}
-
-/* For the Navbar */
+/* --- Navbar --- */
 .navbar {
-  margin-left: 220px; /* Set to the width of the SideNav */
+  margin-left: 220px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  z-index: 998;
 }
 
-/* Center the Navbar Brand */
+/* --- Navbar Brand --- */
 .navbar-brand {
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2937 !important;
 }
 
-/* Adjust the following styles based on your design */
+/* --- Navbar Text --- */
 .navbar-text {
-  color: white;
+  color: #334155;
   margin-right: 20px;
 }
 
-/* For the Container inside Navbar */
+/* --- Container (within Navbar) --- */
 .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* For the Button inside Navbar */
-.btn-outline-dark {
-  color: white;
-  border-color: white;
+/* --- Logout Button or Navbar Button --- */
+.btn-outline-dark,
+.logout-btn {
+  color: #ef4444;
+  border: 1px solid #ef4444;
+  font-weight: 500;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #ef4444;
+    color: #ffffff;
+  }
 }
 
-/* Example styles for better readability */
+/* --- Global Body Styles --- */
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #f8f9fa; /* Body background color */
-  color: #495057; /* Body text color */
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+  background-color: #f8fafc; // soft light background
+  color: #475569;
+  font-size: 15px;
 }
