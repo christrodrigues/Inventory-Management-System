@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Container, Row, Button, Col, Table, Modal } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Container, Row, Col, Table } from "react-bootstrap";
 import { URLS } from "../../routes";
 import displayToast from "../../utils/displayToast";
 
@@ -9,74 +8,59 @@ function ManageInvoice() {
   const [invoices, setInvoices] = useState([]);
 
   useEffect(() => {
-    let isActive = true;
-
-    if (isActive) {
-      fetchInvoices();
-    }
-    return () => {
-      isActive = false;
-    };
+    fetchInvoices();
   }, []);
 
   const fetchInvoices = async () => {
-    const url = URLS.GET_ALL_INVOICE;
-    axios
-      .get(url)
-      .then(function (response) {
-        console.log(response);
-        setInvoices(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-        displayToast({ type: "error", msg: "Oops! Something went wrong" });
-      });
+    try {
+      const { data } = await axios.get(URLS.GET_ALL_INVOICE);
+      setInvoices(data);
+    } catch (error) {
+      console.log(error);
+      displayToast({ type: "error", msg: "Oops! Something went wrong" });
+    }
   };
 
   return (
     <Container className="container-main">
-      <Row className="container-main">
+      <Row className="mb-4 d-flex justify-content-between align-items-center">
         <Col>
-          <h3>Buyers Invoices</h3>
+          <h3 style={{ fontWeight: 600, color: "#1e293b" }}>Buyers Invoices</h3>
         </Col>
       </Row>
+
       <Row>
-        <Table className="table table-success">
-          <div id="customers">
-            <thead>
-              <tr>
-                <th>Sr. No.</th>
-                <th>Company Name</th>
-                <th>Total Products</th>
-                <th>Total Quantity</th>
-                <th>Total Price</th>
-                <th>Payment Date</th>
-              </tr>
-            </thead>
+        <Table responsive hover className="mt-3" id="customers">
+          <thead>
+            <tr>
+              <th>Sr. No.</th>
+              <th>Company Name</th>
+              <th>Total Products</th>
+              <th>Total Quantity</th>
+              <th>Total Price</th>
+              <th>Payment Date</th>
+            </tr>
+          </thead>
 
-            <tbody>
-              {invoices.map((item, index) => {
-                const { id, purchaseOrder, paymentDate } = item;
-                const { products, buyer = {}, totalAmount } = purchaseOrder;
-                let { companyName = "" } = buyer;
-                let qty = products.reduce(
-                  (acc, current) => acc + current.quantity,
-                  0
-                );
+          <tbody>
+            {invoices.map((item, index) => {
+              const { id, purchaseOrder, paymentDate } = item;
+              const { products, buyer = {}, totalAmount } = purchaseOrder;
+              const companyName = buyer?.companyName || "";
+              const totalQty = products.reduce((acc, p) => acc + p.quantity, 0);
 
-                return (
-                  <tr key={id}>
-                    <td>{index + 1}</td>
-                    <td>{companyName}</td>
-                    <td>{products.length}</td>
-                    <td>{qty}</td>
-                    <td>{totalAmount}</td>
-                    <td>{paymentDate}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </div>
+              return (
+                <tr key={id}>
+                  <td>{index + 1}</td>
+                  <td>{companyName}</td>
+                  <td>{products.length}</td>
+                  <td>{totalQty}</td>
+                  <td>{totalAmount}</td>
+                  <td>{paymentDate}</td>
+                </tr>
+              );
+            })}
+          </tbody>
         </Table>
       </Row>
     </Container>

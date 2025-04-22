@@ -28,43 +28,19 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "ADD_PRODUCT":
-      return {
-        ...state,
-        selectedProducts: [...state.selectedProducts, action.product],
-      };
-
+      return { ...state, selectedProducts: [...state.selectedProducts, action.product] };
     case "DELETE_PRODUCT":
-      return {
-        ...state,
-        selectedProducts: state.selectedProducts.filter(
-          (p) => p.id !== action.product.id
-        ),
-      };
-
+      return { ...state, selectedProducts: state.selectedProducts.filter((p) => p.id !== action.product.id) };
     case "UPDATE_BUYER":
-      return {
-        ...state,
-        buyerId: action.buyerId,
-      };
-
+      return { ...state, buyerId: action.buyerId };
     case "UPDATE_PAYMENT_DATE":
-      return {
-        ...state,
-        paymentDate: action.paymentDate,
-      };
-
+      return { ...state, paymentDate: action.paymentDate };
     case "UPDATE_QUANTITY":
-      return {
-        ...state,
-        selectedProducts: action.productList,
-      };
-
+      return { ...state, selectedProducts: action.productList };
     case "UPDATE_ALL_FIELDS":
       return action.state;
-
     case "RESET":
       return initialState;
-
     default:
       return state;
   }
@@ -77,439 +53,261 @@ function useQuery() {
 }
 
 function AddPurchaseOrder() {
-  let query = useQuery();
+  const query = useQuery();
   const poId = query.get("id");
-
   const [productList, setProductList] = useState([]);
   const [currentProduct, setCurrentProduct] = useState(null);
-
   const [buyers, setBuyers] = useState([]);
-
   const [state, dispatch] = useReducer(reducer, initialState);
   const { selectedProducts, paymentDate, buyerId } = state;
-
   const [isLoading, setIsLoading] = useState(true);
-
   const history = useHistory();
-
   const [isUpdate, setIsUpdate] = useState(false);
-
-  const fetchProducts = async () => {
-    const url = URLS.GET_ALL_PRODUCTS;
-    axios
-      .get(url)
-      .then(function (response) {
-        setProductList(response.data);
-        fetchBuyers();
-      })
-      .catch(function (error) {
-        console.log(error);
-        displayToast({ type: "error", msg: "Oops! Something went wrong" });
-      });
-  };
-
-  const fetchBuyers = async () => {
-    const url = URLS.GET_ALL_BUYERS;
-    axios
-      .get(url)
-      .then(function (response) {
-        // console.log(response);
-        setBuyers(response.data);
-        if (isUpdate) {
-          fetchCurrentPo();
-        } else {
-          setIsLoading(false);
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-        displayToast({ type: "error", msg: "Oops! Something went wrong" });
-      });
-  };
 
   useEffect(() => {
     let isActive = true;
-
-    if (isActive) {
-      isSubmitted = false;
-      setIsUpdate(!!poId);
-      fetchProducts();
-    }
-
-    return () => {
-      isActive = false;
-    };
+    isSubmitted = false;
+    setIsUpdate(!!poId);
+    if (isActive) fetchProducts();
+    return () => (isActive = false);
   }, []);
 
-  const fetchCurrentPo = async () => {
-    const url = `${URLS.GET_PURCHASE_ORDERS_DETAILS}/${poId}`;
+  const fetchProducts = async () => {
     axios
-      .get(url)
-      .then(function (response) {
-        const { status } = response;
-
-        if (status === 200) {
-          dispatch({ type: "UPDATE_ALL_FIELDS", state: response.data });
-        } else {
-          displayToast({ type: "error", msg: "Oops! Something went wrong." });
-          setIsLoading(false);
-        }
+      .get(URLS.GET_ALL_PRODUCTS)
+      .then((res) => {
+        setProductList(res.data);
+        fetchBuyers();
       })
-      .catch(function (error) {
+      .catch(() => displayToast({ type: "error", msg: "Error fetching products" }));
+  };
+
+  const fetchBuyers = async () => {
+    axios
+      .get(URLS.GET_ALL_BUYERS)
+      .then((res) => {
+        setBuyers(res.data);
+        if (isUpdate) fetchCurrentPo();
+        else setIsLoading(false);
+      })
+      .catch(() => displayToast({ type: "error", msg: "Error fetching buyers" }));
+  };
+
+  const fetchCurrentPo = async () => {
+    axios
+      .get(`${URLS.GET_PURCHASE_ORDERS_DETAILS}/${poId}`)
+      .then((res) => {
+        if (res.status === 200) dispatch({ type: "UPDATE_ALL_FIELDS", state: res.data });
+        else displayToast({ type: "error", msg: "Error fetching order" });
         setIsLoading(false);
-        console.log(error);
-        displayToast({ type: "error", msg: error.msg });
+      })
+      .catch((err) => {
+        console.log(err);
+        displayToast({ type: "error", msg: err.msg });
+        setIsLoading(false);
       });
   };
 
-  const handleProductChangne = (e) => {
-    setCurrentProduct(e.target.value);
-  };
+  const handleBuyerChange = (e) => dispatch({ type: "UPDATE_BUYER", buyerId: e.target.value });
+  const handleDateChange = (date) => dispatch({ type: "UPDATE_PAYMENT_DATE", paymentDate: date });
+  const handleProductChange = (e) => setCurrentProduct(e.target.value);
 
-  const addProduct = (e) => {
-    setIsLoading(true);
-    e.preventDefault();
+  const addProduct = () => {
     if (currentProduct) {
-      if (selectedProducts.findIndex((p) => p.id == currentProduct) === -1) {
-        const product = productList.find((i) => i.id == currentProduct);
-        dispatch({ type: "ADD_PRODUCT", product });
+      const exists = selectedProducts.some((p) => p.id === parseInt(currentProduct));
+      if (exists) {
+        displayToast({ type: "error", msg: "Product already added!" });
       } else {
-        displayToast({ type: "error", msg: "Product already added in list!" });
+        const product = productList.find((p) => p.id === parseInt(currentProduct));
+        dispatch({ type: "ADD_PRODUCT", product });
       }
     } else {
       displayToast({ type: "error", msg: "Please select a product!" });
     }
-    setIsLoading(false);
-  };
-
-  const deleteProduct = (product) => {
-    dispatch({ type: "DELETE_PRODUCT", product });
   };
 
   const handleQuantityChange = (e, product) => {
     const quantity = e.target.value;
-    let isValid = false;
-
-    const productList = selectedProducts.map((i) => {
-      if (i.id == product.id) {
-        if (quantity > i.quantity) {
-          displayToast({
-            type: "error",
-            msg: "Quantity cannot be more than available quantity!",
-          });
-          return false;
-        } else {
-          isValid = true;
-          return { ...i, selectedQuantity: quantity };
-        }
-      }
-      return i;
-    });
-
-    if (isValid) {
-      dispatch({ type: "UPDATE_QUANTITY", productList });
-    }
+    let updatedList = selectedProducts.map((p) =>
+      p.id === product.id
+        ? quantity <= p.quantity
+          ? { ...p, selectedQuantity: quantity }
+          : (displayToast({ type: "error", msg: "Quantity exceeds available" }), p)
+        : p
+    );
+    dispatch({ type: "UPDATE_QUANTITY", productList: updatedList });
   };
 
-  const handleBuyerChangne = (e) => {
-    dispatch({ type: "UPDATE_BUYER", buyerId: e.target.value });
-  };
-
-  const handleDateChange = (date) => {
-    dispatch({ type: "UPDATE_PAYMENT_DATE", paymentDate: date });
-  };
+  const deleteProduct = (product) => dispatch({ type: "DELETE_PRODUCT", product });
 
   const submitPo = () => {
-    if (!isSubmitted) {
-      isSubmitted = true;
-      setIsLoading(true);
+    if (isSubmitted) return;
 
-      if (
-        validateInputField({ field: buyerId, fieldName: "buyer name" }) &&
-        validateInputField({ field: paymentDate, fieldName: "payment date" })
-      ) {
-        if (selectedProducts.length > 0) {
-          let isValid = true;
-          for (let i = 0; i < selectedProducts.length; i++) {
-            const { selectedQuantity } = selectedProducts[i];
-            if (!selectedQuantity) {
-              isValid = false;
-              displayToast({
-                type: "error",
-                msg: "Please select a quantity for each product!",
-              });
-              return false;
-            }
-          }
-          const date = dayjs(paymentDate).format("MM-DD-YYYY");
+    isSubmitted = true;
+    setIsLoading(true);
 
-          if (isValid) {
-            const buyer = buyers.find((b) => b.id == state.buyerId);
+    if (!validateInputField({ field: buyerId, fieldName: "Buyer" }) || selectedProducts.length === 0) {
+      displayToast({ type: "error", msg: "Fill all required fields" });
+      setIsLoading(false);
+      isSubmitted = false;
+      return;
+    }
 
-            const userProducts = selectedProducts.map((item) => {
-              return {
-                product: item,
-                quantity: parseInt(item.selectedQuantity),
-              };
-            });
-
-            const body = {
-              buyer,
-              paymentDueDate: date,
-              products: userProducts,
-              totalAmount: 0.0,
-              paid: false,
-            };
-
-            submitPoAPi(body);
-          }
-        } else {
-          isSubmitted = false;
-          setIsLoading(false);
-          displayToast({ type: "error", msg: "Please select a product!" });
-        }
-      } else {
-        isSubmitted = false;
+    for (let item of selectedProducts) {
+      if (!item.selectedQuantity) {
+        displayToast({ type: "error", msg: "Select quantity for each product" });
         setIsLoading(false);
+        isSubmitted = false;
+        return;
       }
     }
-  };
 
-  const submitPoAPi = async (body) => {
-    const url = URLS.ADD_PURCHASE_ORDERS;
+    const buyer = buyers.find((b) => b.id == buyerId);
+    const products = selectedProducts.map((item) => ({
+      product: item,
+      quantity: parseInt(item.selectedQuantity),
+    }));
+
+    const payload = {
+      buyer,
+      paymentDueDate: dayjs(paymentDate).format("MM-DD-YYYY"),
+      products,
+      totalAmount: 0.0,
+      paid: false,
+    };
 
     axios
-      .post(url, body)
-      .then(function (response) {
-        const { status } = response;
-        if (status === 200) {
-          resetForm();
-          displayToast({
-            type: "success",
-            msg: `Purchase Order added successfully!`,
-          });
-          setIsLoading(false);
-          setTimeout(() => {
-            history.push("/manage-purchase-order");
-          }, 1000);
-        } else {
-          displayToast({ type: "error", msg: "Oops! Something went wrong." });
-          setIsLoading(false);
+      .post(URLS.ADD_PURCHASE_ORDERS, payload)
+      .then((res) => {
+        if (res.status === 200) {
+          displayToast({ type: "success", msg: "Order created successfully" });
+          dispatch({ type: "RESET" });
+          setTimeout(() => history.push("/manage-purchase-order"), 1000);
         }
-      })
-      .catch(function (error) {
         setIsLoading(false);
-        console.log(error);
-        displayToast({ type: "error", msg: error.msg });
+      })
+      .catch((err) => {
+        console.log(err);
+        displayToast({ type: "error", msg: "Failed to create order" });
+        setIsLoading(false);
       });
   };
 
-  const resetForm = () => {
-    dispatch({ type: "RESET" });
-  };
-
-  let totalPrice = 0,
-    totalAvlQty = 0,
-    totalQty = 0,
-    totalAmount = 0;
-
-  selectedProducts.forEach((i) => {
-    // totalPrice += i.price;
-    // totalAvlQty += i.quantity;
-    totalQty += i.selectedQuantity ? parseInt(i.selectedQuantity) : 0;
-    totalPrice += i.selectedQuantity ? i.selectedQuantity * i.price : 0;
+  let totalQty = 0;
+  let totalPrice = 0;
+  selectedProducts.forEach((p) => {
+    const qty = parseInt(p.selectedQuantity || 0);
+    totalQty += qty;
+    totalPrice += qty * p.price;
   });
 
   return (
-    <React.Fragment>
-      <Container fluid="lg">
-        <Row className="container-main">
-          <Col lg={6}>
-            <h3 className="center-align">Add Purchase Order</h3>
-          </Col>
-        </Row>
+    <Container className="container-main">
+      <Row className="mb-4">
+        <Col><h3 className="text-center">{isUpdate ? "Update" : "Add"} Purchase Order</h3></Col>
+      </Row>
 
-        <Row className="container-main">
-          <Col md={{ span: 10, offset: 1 }}>
-            <Card>
-              <Card.Body>
-                {/* <Form onSubmit={addProduct}> */}
-                <Row>
-                  <Col lg={6}>
-                    <FloatingLabel
-                      controlId="floatingSelect"
-                      label="Seelct Buyer"
-                    >
-                      <Form.Select
-                        aria-label="Buyer List"
-                        onChange={handleBuyerChangne}
-                        defaultValue={buyerId}
-                      >
-                        <option value="" selected disabled>
-                          Select a Buyer
-                        </option>
-                        {buyers.map((b) => {
-                          return (
-                            <option key={b.id} value={b.id}>
-                              {b.companyName} - {b.ownerName}
-                            </option>
-                          );
-                        })}
-                      </Form.Select>
-                    </FloatingLabel>
-                  </Col>
-                  <Col lg={6}>
-                    <Form.Group className="mb-3" controlId="formBasicQuantity">
-                      <Form.Label>Payment Date</Form.Label>
-                      <DatePicker
-                        selected={paymentDate}
-                        onChange={(date) => handleDateChange(date)}
+      <Card className="shadow-sm mb-4">
+        <Card.Body>
+          <Row className="g-3">
+            <Col lg={6}>
+              <FloatingLabel label="Select Buyer">
+                <Form.Select onChange={handleBuyerChange} value={buyerId || ""}>
+                  <option disabled value="">Select a Buyer</option>
+                  {buyers.map((b) => (
+                    <option key={b.id} value={b.id}>
+                      {b.companyName} - {b.ownerName}
+                    </option>
+                  ))}
+                </Form.Select>
+              </FloatingLabel>
+            </Col>
+            <Col lg={6}>
+              <Form.Label>Payment Date</Form.Label>
+              <DatePicker className="form-control" selected={paymentDate} onChange={handleDateChange} />
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+
+      <Card className="shadow-sm mb-4">
+        <Card.Body>
+          <Row className="g-3 align-items-end">
+            <Col lg={5}>
+              <FloatingLabel label="Select Product">
+                <Form.Select onChange={handleProductChange}>
+                  <option disabled selected value="">Select a Product</option>
+                  {productList.map((p) => (
+                    <option key={p.id} value={p.id}>{p.productName}</option>
+                  ))}
+                </Form.Select>
+              </FloatingLabel>
+            </Col>
+            <Col lg={2}>
+              <Button onClick={addProduct} variant="primary" disabled={isLoading}>Add</Button>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+
+      {selectedProducts.length > 0 && (
+        <Card className="shadow-sm">
+          <Card.Body>
+            <Table responsive bordered hover className="align-middle">
+              <thead className="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Product Name</th>
+                  <th>Price</th>
+                  <th>Available Quantity</th>
+                  <th>Order Quantity</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedProducts.map((p, idx) => (
+                  <tr key={p.id}>
+                    <td>{idx + 1}</td>
+                    <td>{p.productName}</td>
+                    <td>{p.price}</td>
+                    <td>{p.quantity}</td>
+                    <td>
+                      <Form.Control
+                        type="number"
+                        min="1"
+                        value={p.selectedQuantity || ""}
+                        onChange={(e) => handleQuantityChange(e, p)}
                       />
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <br />
-                <Row>
-                  <Col lg={5}>
-                    <FloatingLabel
-                      controlId="floatingSelect"
-                      label="Seelct Products"
-                    >
-                      <Form.Select
-                        aria-label="Product List"
-                        onChange={handleProductChangne}
-                      >
-                        <option value="" selected disabled>
-                          Select a Product
-                        </option>
-                        {productList.map((product) => {
-                          return (
-                            <option key={product.id} value={product.id}>
-                              {product.productName}
-                            </option>
-                          );
-                        })}
-                      </Form.Select>
-                    </FloatingLabel>
-                  </Col>
-                  <Col lg={1}>
-                    <Button
-                      variant="primary"
-                      type="button"
-                      onClick={addProduct}
-                      disabled={isLoading}
-                    >
-                      Add
-                    </Button>
-                  </Col>
-                </Row>
-                {/* </Form> */}
-              </Card.Body>
-            </Card>
-            <br />
-            <Card>
-              <Card.Body>
-                <Table striped bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Sr. No.</th>
-                      <th>Product Name</th>
-                      <th>Price</th>
-                      <th>Available Quantity</th>
-                      <th>Quantity</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
+                    </td>
+                    <td>
+                      <Button variant="danger" size="sm" onClick={() => deleteProduct(p)}>Delete</Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot className="table-light">
+                <tr>
+                  <td colSpan="2"><strong>Total</strong></td>
+                  <td colSpan="2"><strong>{totalPrice}</strong></td>
+                  <td>
+                    <Form.Control value={totalQty} readOnly />
+                  </td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </Table>
+          </Card.Body>
+        </Card>
+      )}
 
-                  <tbody>
-                    {selectedProducts.map((product, index) => {
-                      const {
-                        id,
-                        productName,
-                        quantity,
-                        price = 0,
-                        selectedQuantity = 0,
-                      } = product;
-
-                      return (
-                        <tr key={id}>
-                          <td>{index + 1}</td>
-                          <td>{productName}</td>
-                          <td>{price}</td>
-                          <td>{quantity}</td>
-                          <th>
-                            <Form.Group
-                              className="mb-3"
-                              controlId="formBasicQuantity"
-                            >
-                              <Form.Label>Quantity</Form.Label>
-                              <Form.Control
-                                type="number"
-                                value={selectedQuantity}
-                                onChange={(e) =>
-                                  handleQuantityChange(e, product)
-                                }
-                                placeholder="Enter Quantity"
-                              />
-                            </Form.Group>
-                          </th>
-                          <td>
-                            <Button
-                              onClick={() => deleteProduct(product)}
-                              variant="danger"
-                            >
-                              Delete
-                            </Button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <td colSpan="2">Total</td>
-                      <td>{totalPrice}</td>
-                      {/* <td>{totalAvlQty}</td> */}
-                      <td></td>
-                      <td>
-                        <Form.Group
-                          className="mb-3"
-                          controlId="formBasicQuantity"
-                        >
-                          <Form.Control
-                            type="number"
-                            readOnly
-                            value={totalQty}
-                            placeholder="Enter Quantity"
-                          />
-                        </Form.Group>
-                      </td>
-                      <td></td>
-                    </tr>
-                  </tfoot>
-                </Table>
-              </Card.Body>
-            </Card>
-            <br />
-            <Row>
-              <Col md={{ span: 6, offset: 5 }}>
-                {/* <Form onSubmit={submitPo}> */}
-                <Button
-                  variant="success"
-                  disabled={isLoading}
-                  className="center-align"
-                  type="button"
-                  onClick={submitPo}
-                >
-                  Save
-                </Button>
-                {/* </Form> */}
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
-    </React.Fragment>
+      <Row className="mt-4">
+        <Col className="text-center">
+          <Button onClick={submitPo} variant="success" disabled={isLoading}>
+            {isUpdate ? "Update Order" : "Submit Order"}
+          </Button>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

@@ -9,181 +9,160 @@ function ManagePurchaseOrder() {
   const [pos, setPos] = useState([]);
   const [currentPo, setCurrentPo] = useState(null);
   const [currentPo1, setCurrentPo1] = useState(null);
-
   const [show, setShow] = useState(false);
+  const [show1, setShow1] = useState(false);
+
+  useEffect(() => {
+    fetchPos();
+  }, []);
+
+  const fetchPos = async () => {
+    try {
+      const { status, data } = await axios.get(URLS.GET_ALL_PURCHASE_ORDERS);
+      if (status === 200) {
+        setPos(data);
+      }
+    } catch (error) {
+      console.log(error);
+      displayToast({ type: "error", msg: "Oops! Something went wrong" });
+    }
+  };
+
   const handleClose = () => {
     setShow(false);
     setCurrentPo(null);
   };
 
-  const [show1, setShow1] = useState(false);
   const handleClose1 = () => {
     setShow1(false);
     setCurrentPo1(null);
   };
 
-  const handleShow = () => setShow(true);
-  const handleShow1 = () => setShow1(true);
-
-  useEffect(() => {
-    let isActive = true;
-
-    if (isActive) {
-      fetchPos();
-    }
-    return () => {
-      isActive = false;
-    };
-  }, []);
-
-  const fetchPos = async () => {
-    const url = URLS.GET_ALL_PURCHASE_ORDERS;
-    axios
-      .get(url)
-      .then(function (response) {
-        console.log(response);
-        const { status } = response;
-        if (status === 200) {
-          setPos(response.data);
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-        displayToast({ type: "error", msg: "Oops! Something went wrong" });
-      });
+  const deletePoConfirmation = (po) => {
+    setCurrentPo(po);
+    setShow(true);
   };
 
-  const makePayment = async () => {
-    const url = URLS.GENERATE_INVOICE + currentPo1.id;
-
-    axios
-      .post(url)
-      .then(function (response) {
-        if (response.status === 200) {
-          handleClose1();
-          setCurrentPo1(null);
-          displayToast({
-            type: "success",
-            msg: "Invoice generated successfully!",
-          });
-          fetchPos();
-        } else {
-          displayToast({ type: "error", msg: "Oops! Something went wrong" });
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-        displayToast({ type: "error", msg: "Oops! Something went wrong" });
-      });
-  };
-
-  const deletePoConfirmation = (b) => {
-    setCurrentPo(b);
-    handleShow();
+  const generateInvoiceConfirmation = (po) => {
+    setCurrentPo1(po);
+    setShow1(true);
   };
 
   const deletePurchaseOrder = async () => {
-    const url = URLS.DELETE_PURCHASE_ORDER + currentPo.id;
-    // const data = {
-    //     id : currentBuyer.id
-    // };
-    axios
-      .delete(url)
-      .then(function (response) {
-        handleClose();
-        // console.log(response);
-        displayToast({
-          type: "success",
-          msg: "Purchase Order deleted successfully!",
-        });
-        fetchPos();
-      })
-      .catch(function (error) {
-        console.log(error);
-        displayToast({ type: "error", msg: "Oops! Something went wrong" });
+    try {
+      await axios.delete(URLS.DELETE_PURCHASE_ORDER + currentPo.id);
+      handleClose();
+      displayToast({
+        type: "success",
+        msg: "Purchase Order deleted successfully!",
       });
+      fetchPos();
+    } catch (error) {
+      console.log(error);
+      displayToast({ type: "error", msg: "Oops! Something went wrong" });
+    }
   };
 
-  const generateInvoiceConfirmation = (item) => {
-    setCurrentPo1(item);
-    handleShow1();
+  const makePayment = async () => {
+    try {
+      const url = URLS.GENERATE_INVOICE + currentPo1.id;
+      const response = await axios.post(url);
+      if (response.status === 200) {
+        handleClose1();
+        displayToast({ type: "success", msg: "Invoice generated successfully!" });
+        fetchPos();
+      } else {
+        displayToast({ type: "error", msg: "Oops! Something went wrong" });
+      }
+    } catch (error) {
+      console.log(error);
+      displayToast({ type: "error", msg: "Oops! Something went wrong" });
+    }
   };
 
   return (
     <Container className="container-main">
-      <Row className="container-main">
+      <Row className="mb-4 d-flex justify-content-between align-items-center">
         <Col>
+          <h3 style={{ fontWeight: 600, color: "#1e293b" }}>Purchase Orders</h3>
+        </Col>
+        <Col className="text-end">
           <Link to="/add-purchase-order">
-            <Button style={{ backgroundColor: "#90E4C1", color:"BLACK" }}>Add Purchase Order</Button>
+            <Button style={{ backgroundColor: "#3b82f6", color: "white", fontWeight: 500 }}>
+              + Add Order
+            </Button>
           </Link>
         </Col>
-
       </Row>
+
       <Row>
-        <Table className="table table-success">
-          <div id="customers">
-            <thead>
-              <tr>
-                <th>Sr. No.</th>
-                <th>Company Name</th>
-                <th>Total Products</th>
-                <th>Total Price</th>
-                <th>Payment Date</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
+        <Table responsive hover className="mt-3" id="customers">
+          <thead>
+            <tr>
+              <th>Sr. No.</th>
+              <th>Company Name</th>
+              <th>Total Products</th>
+              <th>Total Price</th>
+              <th>Payment Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
 
-            <tbody>
-              {pos.map((item, index) => {
-                const {
-                  id,
-                  products,
-                  paymentDueDate,
-                  paid,
-                  invoice,
-                  buyer = {},
-                  totalAmount,
-                } = item;
-                let { companyName = "" } = buyer;
+          <tbody>
+            {pos.map((item, index) => {
+              const {
+                id,
+                products,
+                paymentDueDate,
+                paid,
+                buyer = {},
+                totalAmount,
+              } = item;
 
-                return (
-                  <tr key={id}>
-                    <td>{index + 1}</td>
-                    <td>{companyName}</td>
-                    <td>{products.length}</td>
-                    <td>{totalAmount}</td>
-                    <td>{paymentDueDate}</td>
-                    <td>{paid ? "Paid" : "Unpaid"}</td>
-                    <td>
-                      {/* <Link to={`/edit-purchase-order/?id=${id}`}><Button variant="primary">Edit</Button>{' '}</Link> */}
-                      {paid ? (
-                        " - "
-                      ) : (
-                        <React.Fragment>
-                          <Button
-                            onClick={() => generateInvoiceConfirmation(item)}
-                            variant="secondary"
-                          >
-                            Generate Invoice
-                          </Button>{" "}
-                          <Button
-                            onClick={() => deletePoConfirmation(item)}
-                            variant="danger"
-                          >
-                            Delete
-                          </Button>
-                        </React.Fragment>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </div>
+              return (
+                <tr key={id}>
+                  <td>{index + 1}</td>
+                  <td>{buyer.companyName || ""}</td>
+                  <td>{products.length}</td>
+                  <td>{totalAmount}</td>
+                  <td>{paymentDueDate}</td>
+                  <td>
+                    <span style={{ color: paid ? "green" : "red", fontWeight: 500 }}>
+                      {paid ? "Paid" : "Unpaid"}
+                    </span>
+                  </td>
+                  <td>
+                    {paid ? (
+                      "-"
+                    ) : (
+                      <>
+                        <Button
+                          variant="outline-primary"
+                          size="sm"
+                          onClick={() => generateInvoiceConfirmation(item)}
+                          className="me-2"
+                        >
+                          Generate Invoice
+                        </Button>
+                        <Button
+                          variant="outline-danger"
+                          size="sm"
+                          onClick={() => deletePoConfirmation(item)}
+                        >
+                          Delete
+                        </Button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
         </Table>
       </Row>
 
+      {/* Delete Confirmation Modal */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Delete Confirmation</Modal.Title>
@@ -193,7 +172,7 @@ function ManagePurchaseOrder() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            Cancel
           </Button>
           <Button variant="danger" onClick={deletePurchaseOrder}>
             Delete
@@ -201,20 +180,20 @@ function ManagePurchaseOrder() {
         </Modal.Footer>
       </Modal>
 
+      {/* Invoice Confirmation Modal */}
       <Modal show={show1} onHide={handleClose1}>
         <Modal.Header closeButton>
           <Modal.Title>Payment Confirmation</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          You are about to generate invoice and make full payment. Are you sure
-          you want to continue?
+          You are about to generate the invoice and mark the order as paid. Continue?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={handleClose1}>
-            No
+          <Button variant="secondary" onClick={handleClose1}>
+            Cancel
           </Button>
           <Button variant="info" onClick={makePayment}>
-            Yes
+            Yes, Generate
           </Button>
         </Modal.Footer>
       </Modal>
