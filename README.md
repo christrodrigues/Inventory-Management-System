@@ -1,30 +1,49 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/txs49aLm)
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/FXck2Aye)
-# Welcome to the course CSYE7374 - Design Patterns
-> Northeastern University, College of Engineering
+# Inventory Management System
 
+> Personal version of the final project from CSYE7374 - Design Patterns  
+> **Northeastern University, College of Engineering**
 
-## Professor: Daniel Peters
+## 👨‍🏫 Professor
+Daniel Peters
 
-### Requirements
-1. Eclipse or VS Code or IntelliJ.
+## 🧑‍💻 Author
+Christ Rodrigues (rodrigueschrist@gmail.com)
 
-Note: If you are using Eclipse, please have git CLI installed on your system or GitHub Desktop to commit the code in this repository
+---
 
-### SetUp Instructions
-1. Please clone the repository on your local system
-2. For Eclipse Import the project as Existing Maven Project, For IntelliJ you can directlty open it using 'Get from VCS'.
-4. All code should be pushed to the main branch
-3. Ensure the GitHub actions are successful post push
+## 🚀 Project Overview
 
-Submissions will have deadlines, failed GitHub Actions would result in point deductions.
+This project is a full-stack **Inventory Management System** developed as part of the **CSYE7374 - Design Patterns** course.  
+The goal is to apply core object-oriented design principles and software design patterns to build a modular, extensible, and maintainable system.
 
-### References
-1. Cloning a Repository: <https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository>
-2. Any GitHub Setup: Please refer to the Git & GitHub Fundamentals Repository shared to you by your respective TA and refer the README.md section
+---
 
-Please reach out to your respective TA if you need any help in regards with submission/ GitHub
+## 🛠️ Tech Stack
 
-Author:
-- Yesha Joshi (joshi.ye@northeastern.edu)
+- **Java** with **Spring Boot**
+- **MySQL** Database
+- **Hibernate ORM**
+- **React.js (frontend)** *(if applicable)*
+- GitHub Actions for CI/CD
 
+---
+
+## 🧩 Design Patterns Used
+
+- **Singleton** – for consistent database/configuration management
+- **Factory Method** – to encapsulate object creation logic
+- **Command Pattern** – to handle purchase order actions
+- **Decorator Pattern** – for dynamic product feature addition
+- **Facade Pattern** – to simplify invoice and alert processing
+
+---
+
+## 📦 Requirements
+
+- Java 17+
+- Maven
+- MySQL
+- VS Code / IntelliJ / Eclipse (any IDE of choice)
+- Git CLI or GitHub Desktop
+
+---
