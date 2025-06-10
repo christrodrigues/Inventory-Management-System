@@ -23,7 +23,7 @@ The goal is to apply core object-oriented design principles and software design 
 - **Java** with **Spring Boot**
 - **MySQL** Database
 - **Hibernate ORM**
-- **React.js (frontend)** *(if applicable)*
+- **React.js (frontend)** 
 - GitHub Actions for CI/CD
 
 ---
